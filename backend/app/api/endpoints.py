@@ -5,6 +5,7 @@ from app.db.database import get_db
 from sqlalchemy import select, delete
 from app.schemas.offer import OfferCreate
 from app.db.models import Offer, Lead, Result
+from app.services.scoring_service import run_scoring_pipeline
 import pandas as pd
 
 router = APIRouter()
@@ -13,6 +14,7 @@ router = APIRouter()
 @router.post("/offer", status_code=201)
 async def set_offer_context(offer_data: OfferCreate, db: AsyncSession = Depends(get_db)):
 
+    await db.execute(delete(Result))
     await db.execute(delete(Offer))
 
     new_offer = Offer(**offer_data.model_dump())
@@ -62,8 +64,7 @@ async def upload_leads_csv(file: UploadFile = File(...), db: AsyncSession = Depe
 async def process_and_score_leads(db: AsyncSession = Depends(get_db)):
 
     try:
-        # count = await run_scoring_pipeline(db)
-        count = 1
+        count = await run_scoring_pipeline(db)
         return {"message": f"Scoring complete. {count} leads processed.", "processed_count": count}
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))

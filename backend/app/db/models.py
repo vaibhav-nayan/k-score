@@ -1,5 +1,6 @@
-from sqlalchemy import Column, Integer, String, Text, Float
+from sqlalchemy import Column, Integer, String, Text, Float, ForeignKey
 from .database import Base
+from sqlalchemy.orm import relationship
 
 class Offer(Base):
     __tablename__ = 'offers'
@@ -18,10 +19,18 @@ class Lead(Base):
     location = Column(String)
     linkedin_bio = Column(Text)
 
+    result = relationship("Result", back_populates="lead", uselist=False)
+
 class Result(Base):
     __tablename__ = 'results'
+
     id = Column(Integer, primary_key=True, index=True)
-    lead_id = Column(Integer, unique=True, index=True)
+
+    lead_id = Column(Integer, ForeignKey('leads.id'), unique=True, index=True, nullable=False)
+    offer_id = Column(Integer, ForeignKey('offers.id'), nullable=False)
+
+    lead = relationship("Lead", back_populates="result")
+
     name = Column(String)
     role = Column(String)
     company = Column(String)
