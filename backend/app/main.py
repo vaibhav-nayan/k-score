@@ -22,11 +22,6 @@ async def lifespan(app: FastAPI):
     #Shutdown
     print("Closing application..")
 
-    #close db
-    print("Closing database...")
-    await models.db.close()
-    print("Database closed.")
-
 app = FastAPI(lifespan=lifespan)
 
 app.add_middleware(
