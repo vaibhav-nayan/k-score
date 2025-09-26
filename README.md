@@ -132,5 +132,5 @@ The frontend talks to these four main endpoints on the backend:
 
 | Service       | Host                | Live Link                     |
 |---------------|---------------------|-------------------------------|
-| Frontend      | Vercel      | Link      |
-| Backend API   | Render | Link  |
+| Frontend      | Vercel      | [Link](https://k-score.vercel.app/)      |
+| Backend API   | Render | [Link](https://k-score-backend.onrender.com)  |
