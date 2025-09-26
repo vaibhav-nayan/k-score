@@ -1,0 +1,50 @@
+services:
+  db:
+    image: postgres:13
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: lead_scoring_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  backend:
+    build: ./backend
+    container_name: fastapi_backend
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://user:password@db:5432/lead_scoring_db
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    depends_on:
+      - db
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    container_name: react_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+    restart: unless-stopped
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
