@@ -6,12 +6,27 @@
 *.code-workspace
 
 # Backend
+backend/__pycache__/
+backend/*.pyc
+backend/*.pyo
+backend/*.pyd
+backend/env/
 backend/.env
 backend/.venv/
-backend/app/.mypy_cache/
+backend/.mypy_cache/
+backend/.pytest_cache/
+backend/.coverage
+backend/htmlcov/
+backend/dist/
+backend/build/
 
 
 # Frontend
 frontend/node_modules/
-fronend/.env
+frontend/build/
 frontend/dist/
+frontend/.env
+frontend/.pnp.*
+frontend/.next/
+frontend/.turbo/
+frontend/.parcel-cache/

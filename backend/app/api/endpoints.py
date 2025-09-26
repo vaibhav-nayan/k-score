@@ -53,7 +53,7 @@ async def upload_leads_csv(file: UploadFile = File(...), db: AsyncSession = Depe
         db.add_all(leads_to_insert)
         await db.commit()
 
-        return {"message" : f"Successfully uploaded and stored {len(leads_to_insert)} leads"}
+        return {"leads": leads_to_insert}
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Lead upload failed: {e}")
