@@ -15,13 +15,10 @@ async def lifespan(app: FastAPI):
     #Shutdown
     print("Closing application..")
 
-    #close db
-    print("Closing database...")
-    await models.db.close()
-    print("Database closed.")
 
 origins = [
-    "http://localhost:5173"
+    "http://localhost:5173",
+    "https://k-score.vercel.app/"
 ]
 
 app = FastAPI(lifespan=lifespan)
