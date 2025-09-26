@@ -88,7 +88,7 @@ export default function LeadUpload() {
                         <p className="text-xs text-gray-500">CSV file required (Name, Role, Company, etc.)</p>
                     </div>
                 )}
-                <input type="file" className="hidden" accept=".csv" onChange={handleFileChange} disabled={isUploading} />
+                <input id={fileInputId} type="file" className="hidden" accept=".csv" onChange={handleFileChange} disabled={isUploading} />
             </label>
         </div>
     );

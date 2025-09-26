@@ -37,6 +37,7 @@ async def upload_leads_csv(file: UploadFile = File(...), db: AsyncSession = Depe
         if not required_cols.issubset(df.columns):
             raise HTTPException(status_code=400, detail=f"CSV must contain: {', '.join(required_cols)}")
 
+        await db.execute(delete(Result))
         await db.execute(delete(Lead))
 
         leads_to_insert = []

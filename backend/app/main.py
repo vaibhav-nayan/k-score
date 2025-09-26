@@ -3,6 +3,13 @@ from app.api import endpoints
 from app.db.database import init_db
 from app.db import models
 from fastapi.middleware.cors import CORSMiddleware
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+allowed_origins_str = os.getenv("CORS_ALLOWED_ORIGINS", "")
+allowed_origins = [origin.strip() for origin in allowed_origins_str.split(',') if origin.strip()]
 
 async def lifespan(app: FastAPI):
     #Startup
@@ -20,15 +27,11 @@ async def lifespan(app: FastAPI):
     await models.db.close()
     print("Database closed.")
 
-origins = [
-    "http://localhost:5173"
-]
-
 app = FastAPI(lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
